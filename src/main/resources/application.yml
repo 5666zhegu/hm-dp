@@ -5,6 +5,8 @@ spring:
     active: dev
   application:
     name: hmdp
+  jmx:
+    enabled: false
   datasource:
     driver-class-name: ${spring.datasource.driver-class-name}
     url: ${spring.datasource.url}
