@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 import java.io.FileWriter;
@@ -147,4 +148,18 @@ class HmDianPingApplicationTests {
         }
     }
 
+    @Test
+    public void clearSet() {
+        // 1. 获取 Set 操作对象
+        SetOperations<String, String> setOps = stringRedisTemplate.opsForSet();
+        String key = "seckill:order:23";
+
+        // 2. 获取 Set 里所有成员
+        Set<String> members = setOps.members(key);
+
+// 3. 逐个删除所有成员（保留 key 本身）
+        if (members != null && !members.isEmpty()) {
+            setOps.remove(key, members.toArray());
+        }
+    }
 }

@@ -4,6 +4,8 @@
 ---
 local voucherId = ARGV[1];
 local userId = ARGV[2];
+local voucherOrderId = ARGV[3];
+
 local stockKey = 'seckill:stock:' .. voucherId;
 local orderKey = 'seckill:order:' .. voucherId;
 
@@ -15,4 +17,5 @@ if(redis.call('sismember', orderKey, userId) == 1) then
 end;
 redis.call('incrby',stockKey,'-1');
 redis.call('sadd',orderKey, userId);
+redis.call('xadd','voucher.orders','*','id',voucherOrderId,'userId',userId,'voucherId',voucherId);
 return 0;
